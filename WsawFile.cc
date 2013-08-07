@@ -152,10 +152,7 @@ void WsawFile::CalcCard34(){
 
 void WsawFile::SetBindingEnergyFile(string s){
 
-  if ( BindingEnergyFile.is_open() ){
-    // if it is already open close it first
-    BindingEnergyFile.close();
-  }
+
 
 
   BindingEnergyFile.open(s.c_str());

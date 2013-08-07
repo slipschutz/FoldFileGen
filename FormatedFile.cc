@@ -27,11 +27,11 @@ FormatedFile::~FormatedFile(){
 
 void FormatedFile::PushLine(Line &l){
   theLines.push_back(l);
-
-
-
 }
 
+void FormatedFile::BuildYourself(){
+  //should be over written in child classes
+}
 
 void FormatedFile::OpenFile(string FileName){
 

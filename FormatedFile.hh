@@ -30,6 +30,7 @@ public:
 
   void Write();
 
+  virtual void BuildYourself();
 
 private:
 
