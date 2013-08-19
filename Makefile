@@ -8,11 +8,11 @@ EXE=FoldFileGen
 
 $(EXE): $(OBJECTS) $(MAINO) $(HEADERS)
 	@echo "Building" $(EXE)
-	@g++ -g $(OBJECTS) -o $@ -L/user/lipschut/Shell -lNucleus
+	g++ -g $(OBJECTS) $(MAINO) -o $@ -L/user/lipschut/Shell -lNucleus
 	@echo
 	@echo "Build Succeed"
 
-%.o: %.cc
+%.o: %.cc %.hh
 	@echo "Compiling" $<"..."
 	@g++ $(CFLAGS) $< -o $@
 
