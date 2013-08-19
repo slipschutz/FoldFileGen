@@ -12,13 +12,14 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <map>
 #include "FormatedFile.hh"
 using namespace std;
 
 class ReactionManager{
 
 public:
-  void SetIntialNucleusAZ(int,int);
+  void SetInitialNucleusAZ(int,int);
   void SetFinalNucleusAZ(int,int);
 
   Nucleus * InitialNucleus;
@@ -44,6 +45,13 @@ private:
   ReactionManager();
   ~ReactionManager();
   vector <FormatedFile*> theFiles;
+
+  map <string, double> BindingEnergyMapInitial;
+  map <string, double> BindingEnergyMapFinal;
+  
+  bool isPNType;
+  bool isNPType;
+  
   ifstream BE_File;
 };
 #endif

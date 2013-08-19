@@ -1,7 +1,11 @@
 
 #include "ErrorManager.hh"
 
-
+void ErrorManager::BoxPrint(string text, string addOn){
+  stringstream ss;
+  ss<<text<<" "<<addOn;
+  BoxPrint(ss.str());
+}
 
 
 void ErrorManager::BoxPrint(string text){

@@ -17,12 +17,13 @@ using namespace std;
 
 class ErrorManager{
 public:
-  void BoxPrint(string);
+  static void BoxPrint(string);
+  static void BoxPrint(string,string);
 
 private:
-  vector<int> GetSpaces(string);
-  int FindSpot(vector<int>,int);
-  string GetRepeat(char c,int n);
+  static  vector<int> GetSpaces(string);
+  static   int FindSpot(vector<int>,int);
+  static  string GetRepeat(char c,int n);
 
 };
 #endif
