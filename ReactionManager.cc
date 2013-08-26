@@ -123,8 +123,8 @@ void ReactionManager::SetBindingEnergyFile(string s ){
     throw "crap";
   }
   
-  SetInitialNucleusAZ(tempA[0],tempZ[0]);
-  SetFinalNucleusAZ(tempA[1],tempZ[1]);
+  SetInitialNucleusAZ(tempA[0],tempZ[0]); //make the Initial Nuclues obj
+  SetFinalNucleusAZ(tempA[1],tempZ[1]); // make the Final Nucleus obj
   if ( FinalNucleus->GetIsoSpinZ()-InitialNucleus->GetIsoSpinZ() == 1){
     isPNType=false;
     isNPType=true;
@@ -144,3 +144,89 @@ ifstream* ReactionManager::GetBindingEnergyFile(){
   return &BE_File;
 }
 
+Nucleus * ReactionManager::GetInitialNucleus(){
+  try{
+    if (InitialNucleus != NULL){
+      return InitialNucleus;
+    } else {
+      ErrorManager::BoxPrint("Trying to get initial nucleus from reaction manager before it was initialized");
+      throw "crap";
+    }
+  } catch (int n){
+    
+  }
+  return NULL;//should never make it to this line
+}
+
+Nucleus * ReactionManager::GetFinalNucleus(){
+  try{
+    if (FinalNucleus != NULL){
+      return FinalNucleus;
+    } else {
+      ErrorManager::BoxPrint("Trying to get the final nucleus from reaction manager before it was initialized");
+      throw "crap";
+    }
+  } catch (int n){
+    
+  }
+  return NULL;//should never make it to this line
+}
+
+
+
+Transition ReactionManager::FindGTTransitions(){
+
+  //Calling get the nuclei so that it checks if they have been initialized
+  Nucleus * trash;
+  trash = GetInitialNucleus();
+  trash = GetFinalNucleus();
+  
+
+
+  vector <Shell> theZShells = InitialNucleus->GetModelSpaceZShells();
+  vector <Shell> theNShells = InitialNucleus->GetModelSpaceNShells();
+  InitialNucleus->PrintModelSpaces();
+  
+  map <vector<pair<double,double> >,pair<Shell,Shell> > thePossibleTransitions;  
+  if ( isPNType ){
+    for (int i=0;i<(int)theNShells.size();i++){
+      Shell thisNShell= theNShells[i];
+      if (thisNShell.GetOccupancy() != 0 ){
+	for (int j=0;j<(int)theZShells.size();j++){
+	  if ( theZShells[j].GetMaxOccupancy() != theZShells[j].GetOccupancy()){
+	    double deltaL = abs(thisNShell.Getl()-theZShells[j].Getl());
+	    double deltan = abs(thisNShell.Getn()-theZShells[j].Getn());
+	    double deltaJ = abs(thisNShell.GetJ()-theZShells[j].GetJ());
+	    
+	    if ( deltaL==0 && deltan==0 && (deltaJ==1||deltaJ==0) ){//is a GT transition
+	      
+	      vector <pair<double,double> > temp;
+	      
+	      temp.push_back(make_pair(thisNShell.Getn(),theZShells[j].Getn()));
+	      temp.push_back(make_pair(thisNShell.Getl(),theZShells[j].Getl()));
+	      temp.push_back(make_pair(thisNShell.GetJ(),theZShells[j].GetJ()));
+	      
+	      
+	      if (thePossibleTransitions.count(temp) == 0 ){//only if the trans is not there 
+		thePossibleTransitions[temp]=make_pair(thisNShell,theZShells[j]);
+	      } else {
+		ErrorManager::BoxPrint("Hash issue");
+		//	  throw "crap";
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
+  cout<<"\n\n\n\n\n"<<endl;
+  Transition theTrans;
+  for (map<vector<pair<double,double> >,pair<Shell,Shell> >::iterator ii=thePossibleTransitions.begin();
+       ii!=thePossibleTransitions.end();ii++){
+    
+    //cout<< ii->second.first.GetName()<<" "<<ii->second.second.GetName()<<endl;
+    theTrans.theTransitions.push_back(make_pair(ii->second.first,ii->second.second));
+    }
+
+  return theTrans;
+}

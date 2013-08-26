@@ -1,4 +1,8 @@
-CFLAGS=-c -g -Wall
+CFLAGS=-c -g -Wall $(shell root-config --cflags) -I./src -I ./include -std=c++11 
+LDLIBS=$(shell root-config --glibs)
+LDFLAGS=$(shell root-config --ldflags)
+
+
 
 SOURCES=$(shell ls *.cc)
 OBJECTS=$(SOURCES:.cc=.o) 
@@ -8,7 +12,7 @@ EXE=FoldFileGen
 
 $(EXE): $(OBJECTS) $(MAINO) $(HEADERS)
 	@echo "Building" $(EXE)
-	g++ -g $(OBJECTS) $(MAINO) -o $@ -L/user/lipschut/Shell -lNucleus
+	g++ -g $(OBJECTS) $(MAINO) $(LDLIBS) -o $@ -L/user/lipschut/Shell -lNucleus
 	@echo
 	@echo "Build Succeed"
 

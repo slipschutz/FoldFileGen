@@ -9,11 +9,13 @@
 #define  __REACTIONMANAGER_HH
 
 #include "Nucleus.hh"
+#include <cmath>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <map>
 #include "FormatedFile.hh"
+#include "Transition.hh"
 using namespace std;
 
 class ReactionManager{
@@ -25,8 +27,8 @@ public:
   Nucleus * InitialNucleus;
   Nucleus *  FinalNucleus;
 
-  inline Nucleus * GetInitialNucleus(){return InitialNucleus;}
-  inline Nucleus * GetFinalNucleus(){return FinalNucleus;}
+  Nucleus * GetInitialNucleus();
+  Nucleus * GetFinalNucleus();
   
   void SetInitialNucleus(Nucleus*);
   void SetFinalNucleus(Nucleus*);
@@ -34,11 +36,20 @@ public:
   //The Static access method for manager
   static  ReactionManager *GetInstance();
 
+
   void RegisterFile(FormatedFile *aFile);
   void BuildFiles();//appply the virtual methods in each file type to load it self
+
+  Transition FindGTTransitions();
   
   void SetBindingEnergyFile(string);
   ifstream* GetBindingEnergyFile();
+
+  bool isPNType;
+  bool isNPType;
+  map <string, double> BindingEnergyMapInitial;
+  map <string, double> BindingEnergyMapFinal;
+
 
 private:
   //Constructor deconstructor is private for singleton
@@ -46,11 +57,7 @@ private:
   ~ReactionManager();
   vector <FormatedFile*> theFiles;
 
-  map <string, double> BindingEnergyMapInitial;
-  map <string, double> BindingEnergyMapFinal;
   
-  bool isPNType;
-  bool isNPType;
   
   ifstream BE_File;
 };

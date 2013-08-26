@@ -7,36 +7,50 @@
 #include <iomanip>
 
 #include "WsawFile.hh"
+#include "NormodFile.hh"
 #include "ReactionManager.hh"
 #include "ErrorManager.hh"
 //#include "Line.hh"
+
 using namespace std;
 
 
 
 int main(int argc,char**argv){
+  /*  if (argc != 3 )
+    return 1;
   
-  
+  cout<<atoi(argv[0])<<endl;
+  Nucleus aNuc(atoi(argv[1]),atoi(argv[2]));
+  aNuc.Draw();
+  vector<Shell> vec = aNuc.GetModelSpaceZShells();
+  for (int i=0;i<vec.size();i++){
+    cout<<vec[i].GetName()<<endl;
+  }
+  cout<<"SDGSAG"<<endl;
 
+  cout<<aNuc.GetNextShellClosure(126)<<endl;
+  return 0;
+  */
   try {
-    //b.BoxPrint("this is a long message with lots of stuff in it.  I don't know what will happen");
 
-    
     ReactionManager::GetInstance()->SetBindingEnergyFile("Binding_Energies");
+    Transition t =ReactionManager::GetInstance()->FindGTTransitions();
+    NormodFile n;
 
 
-    /*WsawFile aFile;
-    
+    WsawFile aFile;
+    aFile.CalcCard34();
     
     aFile.OpenFile("test.wsaw");
-    aFile.SetBindingEnergyFile("Binding_Energies");
+    
     aFile.BuildFields();
     aFile.Write();
-    */
+    
 
   } catch (...){
 
-    ErrorManager::BoxPrint("Fatal Error.  Program exiting...");
+    ErrorManager::BoxPrint("Fatal Error.  Program exiting ...");
   
   }
   

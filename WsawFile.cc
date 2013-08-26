@@ -107,39 +107,46 @@ void WsawFile::AddCard4(double EBIND,double TMP,
 }
 
 void WsawFile::CalcCard34(){
+  ReactionManager * rm = ReactionManager::GetInstance();
+  bool& isPNType = rm->isPNType;
+  bool& isNPType = rm->isNPType;
   
+  map <string,double>& BindingEnergyMapInitial = rm->BindingEnergyMapInitial;
+  map <string,double>& BindingEnergyMapFinal = rm->BindingEnergyMapFinal;
+  
+
   if (isPNType){
-    for (int i=0;i<(int)theInitialNucleus.GetProtonShells().size();i++){
+    for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells().size();i++){
       
-      Shell thisShell = theInitialNucleus.GetProtonShells()[i];
-      AddCard3(theInitialNucleus.GetA()-1,theInitialNucleus.GetZ());
+      Shell thisShell = rm->InitialNucleus->GetProtonShells()[i];
+      AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ());
       AddCard4(abs(BindingEnergyMapFinal[thisShell.GetName()])
 	       ,1,thisShell.Getl(),thisShell.Getn()-1,1,
 	       thisShell.GetJ(),0.5);
     }
   
-    for (int i=0;i<(int)theInitialNucleus.GetNeutronShells().size();i++){
+    for (int i=0;i<(int)rm->InitialNucleus->GetNeutronShells().size();i++){
       
-      Shell thisShell = theInitialNucleus.GetNeutronShells()[i];
-      AddCard3(theInitialNucleus.GetA()-1,theInitialNucleus.GetZ());
+      Shell thisShell = rm->InitialNucleus->GetNeutronShells()[i];
+      AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ());
       AddCard4(abs(BindingEnergyMapInitial[thisShell.GetName()]),
 	       1,thisShell.Getl(),thisShell.Getn()-1,0,
 	       thisShell.GetJ(),0.5);
     }
   } else if (isNPType){
-   for (int i=0;i<(int)theInitialNucleus.GetProtonShells().size();i++){
+   for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells().size();i++){
       
-      Shell thisShell = theInitialNucleus.GetProtonShells()[i];
-      AddCard3(theInitialNucleus.GetA()-1,theInitialNucleus.GetZ());
+      Shell thisShell = rm->InitialNucleus->GetProtonShells()[i];
+      AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ());
       AddCard4(abs(BindingEnergyMapInitial[thisShell.GetName()])
 	       ,1,thisShell.Getl(),thisShell.Getn()-1,1,
 	       thisShell.GetJ(),0.5);
     }
   
-    for (int i=0;i<(int)theInitialNucleus.GetNeutronShells().size();i++){
+    for (int i=0;i<(int)rm->InitialNucleus->GetNeutronShells().size();i++){
       
-      Shell thisShell = theInitialNucleus.GetNeutronShells()[i];
-      AddCard3(theInitialNucleus.GetA()-1,theInitialNucleus.GetZ()-1);
+      Shell thisShell = rm->InitialNucleus->GetNeutronShells()[i];
+      AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ()-1);
       AddCard4(abs(BindingEnergyMapFinal[thisShell.GetName()]),
 	       1,thisShell.Getl(),thisShell.Getn()-1,0,
 	       thisShell.GetJ(),0.5);
@@ -149,7 +156,7 @@ void WsawFile::CalcCard34(){
 
 
 }
-
+/*
 void WsawFile::SetBindingEnergyFile(string s){
 
 
@@ -204,9 +211,12 @@ void WsawFile::SetBindingEnergyFile(string s){
     CalcCard34();
   }
   
+  CalcCard34();
+  
   cout<<"temp z "<<tempZ[0]<<" "<<tempZ[1]<<endl; 
   cout<<theFinalNucleus.GetIsoSpinZ()<<" "<<-theInitialNucleus.GetIsoSpinZ()<<endl;
 
   cout<<"PN TYPE "<<isPNType<<endl;
   
 }
+*/

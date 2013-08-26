@@ -1,5 +1,8 @@
 
+#ifndef __WSAWFILE_HH
+#define __WSAWFILE_HH
 
+#include "ReactionManager.hh"
 #include "FormatedFile.hh"
 #include <string>
 #include <vector>
@@ -38,16 +41,11 @@ private:
   
   string FileName;
   
-  Nucleus theInitialNucleus;
-  Nucleus theFinalNucleus;
+  Nucleus* theInitialNucleus;
+  Nucleus *theFinalNucleus;
 
 
-  ifstream BindingEnergyFile;
-  map <string, double > BindingEnergyMapInitial;
-  map <string, double > BindingEnergyMapFinal;
-  
-  bool isPNType;
-  bool isNPType;
+
 
   vector <Line> Card3s;
   vector <Line> Card4s;
@@ -59,3 +57,4 @@ private:
   int LengthString;
 
 };
+#endif
