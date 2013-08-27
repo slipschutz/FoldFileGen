@@ -13,13 +13,14 @@ public:
   
   Nucleus * InitialNucleus;
   Nucleus * FinalNucleus;
-  
 
+  void SetTransitions (Transition);
 
 private:
-
-
-
+  void CalcOccupancies(Transition aTran);
+  Line MakeShellLine(Shell theShell,int pFlag);
+  int waveFunctionCount;
+  int LengthFloat;
 
 };
 

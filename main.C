@@ -32,13 +32,16 @@ int main(int argc,char**argv){
   cout<<aNuc.GetNextShellClosure(126)<<endl;
   return 0;
   */
+
   try {
 
     ReactionManager::GetInstance()->SetBindingEnergyFile("Binding_Energies");
     Transition t =ReactionManager::GetInstance()->FindGTTransitions();
     NormodFile n;
-
-
+    n.OpenFile("test.normod");
+    n.SetTransitions(t);
+    n.Write();
+    
     WsawFile aFile;
     aFile.CalcCard34();
     
@@ -47,7 +50,7 @@ int main(int argc,char**argv){
     aFile.BuildFields();
     aFile.Write();
     
-
+    
   } catch (...){
 
     ErrorManager::BoxPrint("Fatal Error.  Program exiting ...");

@@ -181,8 +181,7 @@ Transition ReactionManager::FindGTTransitions(){
   trash = GetInitialNucleus();
   trash = GetFinalNucleus();
   
-
-
+  
   vector <Shell> theZShells = InitialNucleus->GetModelSpaceZShells();
   vector <Shell> theNShells = InitialNucleus->GetModelSpaceNShells();
   InitialNucleus->PrintModelSpaces();
