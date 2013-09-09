@@ -5,10 +5,16 @@
 ReactionManager::ReactionManager() : InitialNucleus(NULL),FinalNucleus(NULL),isPNType(false),
 				     isNPType(false){
  
+  
+  WsawFileName="defualt";
+  NormodFileName="defualt";
+  FoldFileName="defualt";
+
+    
   BindingEnergyMapInitial.clear();
   BindingEnergyMapFinal.clear();
   theFiles.clear();
-  
+  BuildHE3T();
 }
 ReactionManager::~ReactionManager(){
   if (InitialNucleus != NULL)
@@ -171,6 +177,13 @@ Nucleus * ReactionManager::GetFinalNucleus(){
   }
   return NULL;//should never make it to this line
 }
+Nucleus * ReactionManager::GetProjectile(){
+  return Projectile;
+}
+Nucleus * ReactionManager::GetEjectile(){
+  return Ejectile;
+}
+
 
 
 
@@ -181,23 +194,32 @@ Transition ReactionManager::FindGTTransitions(){
   trash = GetInitialNucleus();
   trash = GetFinalNucleus();
   
+  InitialNucleus->GetNShell("1h11/2")->SetFullness(0.42);  
+  InitialNucleus->GetNShell("2d3/2")->SetFullness(0.59);  
+  InitialNucleus->GetNShell("3s1/2")->SetFullness(0.69);  
+  InitialNucleus->GetNShell("1g7/2")->SetFullness(0.7);  
+  InitialNucleus->GetNShell("2d5/2")->SetFullness(0.94);  
   
+
   vector <Shell> theZShells = InitialNucleus->GetModelSpaceZShells();
   vector <Shell> theNShells = InitialNucleus->GetModelSpaceNShells();
-  InitialNucleus->PrintModelSpaces();
+
+
+  
+
   
   map <vector<pair<double,double> >,pair<Shell,Shell> > thePossibleTransitions;  
   if ( isPNType ){
     for (int i=0;i<(int)theNShells.size();i++){
       Shell thisNShell= theNShells[i];
-      if (thisNShell.GetOccupancy() != 0 ){
+      if (thisNShell.GetFullness() != 0 ){
 	for (int j=0;j<(int)theZShells.size();j++){
-	  if ( theZShells[j].GetMaxOccupancy() != theZShells[j].GetOccupancy()){
+	  if ( theZShells[j].GetFullness()!=1){
 	    double deltaL = abs(thisNShell.Getl()-theZShells[j].Getl());
 	    double deltan = abs(thisNShell.Getn()-theZShells[j].Getn());
 	    double deltaJ = abs(thisNShell.GetJ()-theZShells[j].GetJ());
-	    
-	    if ( deltaL==0 && deltan==0 && (deltaJ==1||deltaJ==0) ){//is a GT transition
+	    double deltaSG = thisNShell.GetShellGroup()-theZShells[j].GetShellGroup();
+	    if ( deltaL==0 && deltan==0 && (deltaJ==1||deltaJ==0) &&deltaSG==0){//is a GT transition
 	      
 	      vector <pair<double,double> > temp;
 	      
@@ -228,4 +250,64 @@ Transition ReactionManager::FindGTTransitions(){
     }
 
   return theTrans;
+}
+
+vector <double> ReactionManager::GetCoupledValues(double j1, double j2,int parityChange){
+
+
+  vector <double> temp;
+  if ( parityChange == 1 ){ //from + to + or - to -
+    //only even values allowed
+    
+    int num = abs(j1+j2) - abs(j1-j2);
+    
+    for (int i=0;i<=num;i++){
+      if( int(abs(j1-j2) + i) % 2 ==0 )
+	temp.push_back(abs(j1-j2) +i);
+    }
+  } else if (parityChange == -1 ){
+    //only odd values allowed
+    
+    int num = abs(j1+j2) - abs(j1-j2);
+    
+    for (int i=0;i<=num;i++){
+      if( int(abs(j1-j2) + i) % 2 !=0 )
+	temp.push_back(abs(j1-j2) +i);
+    }
+  }
+  return temp;
+    
+}
+vector <double> ReactionManager::GetCoupledValues(double j1,double j2){
+  
+  vector <double> temp;
+  int num = abs(j1+j2) - abs(j1-j2);
+  
+  for (int i=0;i<=num;i++){
+    temp.push_back(abs(j1-j2) +i);
+  }
+
+  return temp;
+
+}
+
+
+vector <double> ReactionManager::GetJTran(){
+
+  
+
+  
+}
+void ReactionManager::BuildHE3T(){
+
+  Projectile = new Nucleus(3,2);
+  Ejectile = new Nucleus(3,1);
+  
+  Projectile->SetJPi("1/2+");
+  Ejectile->SetJPi("1/2+");
+
+  (*Projectile->GetTheZCoefs())[make_pair("1s1/2","1s1/2")]=0.707;
+
+  (*Ejectile->GetTheZCoefs())[make_pair("1s1/2","1s1/2")]=0.707;
+  
 }

@@ -33,10 +33,19 @@ public:
   void SetInitialNucleus(Nucleus*);
   void SetFinalNucleus(Nucleus*);
 
+  Nucleus * Projectile;
+  Nucleus * Ejectile;
+
+  Nucleus * GetProjectile();
+  Nucleus * GetEjectile();
+
+
   //The Static access method for manager
   static  ReactionManager *GetInstance();
 
-
+  vector <double> GetJTran();
+  vector <double> GetCoupledValues(double,double,int);
+  vector <double> GetCoupledValues(double,double);
   void RegisterFile(FormatedFile *aFile);
   void BuildFiles();//appply the virtual methods in each file type to load it self
 
@@ -50,6 +59,9 @@ public:
   map <string, double> BindingEnergyMapInitial;
   map <string, double> BindingEnergyMapFinal;
 
+  string WsawFileName;
+  string NormodFileName;
+  string FoldFileName;
 
 private:
   //Constructor deconstructor is private for singleton
@@ -57,7 +69,7 @@ private:
   ~ReactionManager();
   vector <FormatedFile*> theFiles;
 
-  
+  void BuildHE3T();
   
   ifstream BE_File;
 };

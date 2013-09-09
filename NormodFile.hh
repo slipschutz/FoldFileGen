@@ -17,8 +17,8 @@ public:
   void SetTransitions (Transition);
 
 private:
-  void CalcOccupancies(Transition aTran);
-  Line MakeShellLine(Shell theShell,int pFlag);
+
+  Line MakeShellLine(Shell theShell,int pFlag,bool isParticle);
   int waveFunctionCount;
   int LengthFloat;
 

@@ -11,7 +11,7 @@ WsawFile::WsawFile() {
   NBPunch=150;
   IDBug=0;
   
-  FileName="Wsaw";
+  SetWaveFunctionFile("Wsaw");
   
   LengthString=8;
   LengthFloat=10;
@@ -29,6 +29,11 @@ WsawFile::~WsawFile(){
   FileName="-1";
   
 
+}
+
+void WsawFile::SetWaveFunctionFile(string s){
+  FileName=s;
+  ReactionManager::GetInstance()->WsawFileName=FileName;
 }
 
 void WsawFile::BuildFields(){
@@ -116,36 +121,36 @@ void WsawFile::CalcCard34(){
   
 
   if (isPNType){
-    for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells().size();i++){
+    for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells()->size();i++){
       
-      Shell thisShell = rm->InitialNucleus->GetProtonShells()[i];
+      Shell thisShell = (*rm->InitialNucleus->GetProtonShells())[i];
       AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ());
       AddCard4(abs(BindingEnergyMapFinal[thisShell.GetName()])
 	       ,1,thisShell.Getl(),thisShell.Getn()-1,1,
 	       thisShell.GetJ(),0.5);
     }
   
-    for (int i=0;i<(int)rm->InitialNucleus->GetNeutronShells().size();i++){
+    for (int i=0;i<(int)rm->InitialNucleus->GetNeutronShells()->size();i++){
       
-      Shell thisShell = rm->InitialNucleus->GetNeutronShells()[i];
+      Shell thisShell = (*rm->InitialNucleus->GetNeutronShells())[i];
       AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ());
       AddCard4(abs(BindingEnergyMapInitial[thisShell.GetName()]),
 	       1,thisShell.Getl(),thisShell.Getn()-1,0,
 	       thisShell.GetJ(),0.5);
     }
   } else if (isNPType){
-   for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells().size();i++){
-      
-      Shell thisShell = rm->InitialNucleus->GetProtonShells()[i];
-      AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ());
-      AddCard4(abs(BindingEnergyMapInitial[thisShell.GetName()])
-	       ,1,thisShell.Getl(),thisShell.Getn()-1,1,
-	       thisShell.GetJ(),0.5);
+   for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells()->size();i++){
+     
+     Shell thisShell = (*rm->InitialNucleus->GetProtonShells())[i];
+     AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ());
+     AddCard4(abs(BindingEnergyMapInitial[thisShell.GetName()])
+	      ,1,thisShell.Getl(),thisShell.Getn()-1,1,
+	      thisShell.GetJ(),0.5);
     }
   
-    for (int i=0;i<(int)rm->InitialNucleus->GetNeutronShells().size();i++){
+    for (int i=0;i<(int)rm->InitialNucleus->GetNeutronShells()->size();i++){
       
-      Shell thisShell = rm->InitialNucleus->GetNeutronShells()[i];
+      Shell thisShell = (*rm->InitialNucleus->GetNeutronShells())[i];
       AddCard3(rm->InitialNucleus->GetA()-1,rm->InitialNucleus->GetZ()-1);
       AddCard4(abs(BindingEnergyMapFinal[thisShell.GetName()]),
 	       1,thisShell.Getl(),thisShell.Getn()-1,0,

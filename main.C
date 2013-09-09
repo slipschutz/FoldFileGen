@@ -8,6 +8,7 @@
 
 #include "WsawFile.hh"
 #include "NormodFile.hh"
+#include "FoldFile.hh"
 #include "ReactionManager.hh"
 #include "ErrorManager.hh"
 //#include "Line.hh"
@@ -36,20 +37,35 @@ int main(int argc,char**argv){
   try {
 
     ReactionManager::GetInstance()->SetBindingEnergyFile("Binding_Energies");
+    ReactionManager::GetInstance()->GetInitialNucleus()->SetJPi("0+");
+    ReactionManager::GetInstance()->GetFinalNucleus()->SetJPi("1+");
+
+    
+    
+    
     Transition t =ReactionManager::GetInstance()->FindGTTransitions();
+
     NormodFile n;
     n.OpenFile("test.normod");
     n.SetTransitions(t);
     n.Write();
     
+    system("./NormodSetUp.sh test.normod");
+
     WsawFile aFile;
     aFile.CalcCard34();
-    
+
     aFile.OpenFile("test.wsaw");
     
     aFile.BuildFields();
+    
     aFile.Write();
     
+    FoldFile aFold;
+    aFold.SetNormodFile("test.normod_out");
+    aFold.Build();
+    aFold.OpenFile("test.fold");
+    aFold.Write();
     
   } catch (...){
 

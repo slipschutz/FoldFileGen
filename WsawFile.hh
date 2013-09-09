@@ -31,6 +31,7 @@ public:
   void SetBindingEnergyFile(string s);
 
   void BuildFields();
+  void SetWaveFunctionFile(string s);
 private:
 
   double RMesh;
