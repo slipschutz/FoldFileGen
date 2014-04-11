@@ -33,7 +33,7 @@ void FoldFile::Build(){
   Line Card1;
   Card1.AddField(intLength,1);
   Card1.AddField(intLength,1);
-  Card1.AddField(stringLength,fileName);
+  Card1.AddField(fileName.size(),fileName);
   PushLine(Card1);
 
   Line Card2;
@@ -84,10 +84,10 @@ void FoldFile::BuildCard5(){
 
   Line Card5;
 
-  Card5.AddField(floatLength,e02/sqrt(ep2*et2));
-  Card5.AddField(floatLength,ka);
+  Card5.AddField(floatLength,(round((e02/sqrt(ep2*et2))*1000.0))/1000.0);
+  Card5.AddField(floatLength,(round(ka*1000.0))/1000.0);
   Card5.AddField(floatLength,1.0);
-  Card5.AddField(floatLength,"love_140");
+  Card5.AddField(8,"love_140");
   
 
   PushLine(Card5);
@@ -95,13 +95,23 @@ void FoldFile::BuildCard5(){
 
 void FoldFile::BuildLine3or4(Nucleus* initial,Nucleus* final){
   stringstream ss;
+  //the line with FJF PARF FJI PARI
+  //has the following character length structure
+  // 10 1 9 1
   Line a;
-  ss<<final->GetJ()<<final->GetStringP();
-  a.AddField(floatLength,ss.str());
-  ss.str("");
-  ss<<initial->GetJ()<<initial->GetStringP();
-  a.AddField(floatLength,ss.str());
+  if (round(final->GetJ())==final->GetJ())
+    ss<<(float)final->GetJ()<<"."<<final->GetStringP();
+  else
+    ss<<(float)final->GetJ()<<final->GetStringP();
+  a.AddField(10+1,ss.str());
 
+  ss.str("");
+  if (round(initial->GetJ())==initial->GetJ())
+    ss<<initial->GetJ()<<"."<<initial->GetStringP();
+  else
+    ss<<initial->GetJ()<<initial->GetStringP();
+  a.AddField(9+1,ss.str());
+  
 
   PushLine(a);
   ss.str("");

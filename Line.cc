@@ -79,7 +79,7 @@ void Line::Write(ofstream &file){
       int n=iFields.front().Value;
 
       if (CheckLength(l,n)){
-	file<<left<<setprecision(l)<<setw(l)<<iFields.front().Value;
+	file<<right<<setprecision(l)<<setw(l)<<iFields.front().Value;
       } //still remove that field just don't print it.
       iFields.erase(iFields.begin());
     }else if (theOrder[i] == dFieldsFlag){//printing floats 
@@ -87,9 +87,9 @@ void Line::Write(ofstream &file){
       double v=dFields.front().Value;
       if (int(v) == v&&CheckLength(l+1,v)){ // like 20 not 20.1
 	stringstream s;s<<v<<".";
-	file<<left<<setprecision(l)<<setw(l)<<s.str();
+	file<<right<<setprecision(l)<<setw(l)<<s.str();
       } else if ( int(v)!=v&&CheckLength(l,v)){
-	file<<left<<setprecision(l)<<setw(l)<<v;
+	file<<right<<setprecision(l)<<setw(l)<<v;
       }
       //file<<setprecision(l-1)<<setw(l)<<v;
       dFields.erase(dFields.begin());
@@ -100,7 +100,7 @@ void Line::Write(ofstream &file){
       if (s.size()>l){
 	cout<<"***Value to big for character spacing: "<<s<<endl;
       }else {
-	file<<left<<setw(l)<<sFields.front().Value;
+	file<<right<<setw(l)<<sFields.front().Value;
       }
       sFields.erase(sFields.begin());
 

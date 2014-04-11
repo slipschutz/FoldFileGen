@@ -13,7 +13,7 @@ WsawFile::WsawFile() {
   
   SetWaveFunctionFile("Wsaw");
   
-  LengthString=8;
+  LengthString=4;
   LengthFloat=10;
   LengthInt=5;
 }
@@ -48,10 +48,10 @@ void WsawFile::BuildFields(){
   //Inherited from FormatedFile PushLine(Line )
   Line LineOne;
   LineOne.AddField(LengthFloat,RMesh);
-  LineOne.AddField(LengthFloat+4,double(RMax));
+  LineOne.AddField(LengthFloat,double(RMax));
 
-  LineOne.AddField(LengthInt-2,NPunch);
-  LineOne.AddField(LengthInt+2,NBPunch);
+  LineOne.AddField(LengthInt,NPunch);
+  LineOne.AddField(LengthInt,NBPunch);
   LineOne.AddField(LengthInt,IDBug);
 
 
@@ -119,7 +119,7 @@ void WsawFile::CalcCard34(){
   map <string,double>& BindingEnergyMapInitial = rm->BindingEnergyMapInitial;
   map <string,double>& BindingEnergyMapFinal = rm->BindingEnergyMapFinal;
   
-
+  cout<<"START"<<endl;
   if (isPNType){
     for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells()->size();i++){
       
@@ -128,6 +128,7 @@ void WsawFile::CalcCard34(){
       AddCard4(abs(BindingEnergyMapFinal[thisShell.GetName()])
 	       ,1,thisShell.Getl(),thisShell.Getn()-1,1,
 	       thisShell.GetJ(),0.5);
+      cout<<abs(BindingEnergyMapFinal[thisShell.GetName()])<<endl;
     }
   
     for (int i=0;i<(int)rm->InitialNucleus->GetNeutronShells()->size();i++){
@@ -137,6 +138,9 @@ void WsawFile::CalcCard34(){
       AddCard4(abs(BindingEnergyMapInitial[thisShell.GetName()]),
 	       1,thisShell.Getl(),thisShell.Getn()-1,0,
 	       thisShell.GetJ(),0.5);
+      cout<<abs(BindingEnergyMapInitial[thisShell.GetName()])<<endl;
+      
+
     }
   } else if (isNPType){
    for (int i=0;i<(int)rm->InitialNucleus->GetProtonShells()->size();i++){

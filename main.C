@@ -44,14 +44,14 @@ int main(int argc,char**argv){
     
     
     Transition t =ReactionManager::GetInstance()->FindGTTransitions();
-
+    ReactionManager::GetInstance()->PrintBEMaps();
     NormodFile n;
     n.OpenFile("test.normod");
     n.SetTransitions(t);
     n.Write();
     
     system("./NormodSetUp.sh test.normod");
-
+    ReactionManager::GetInstance()->GetInitialNucleus()->SetAZ(11,4);
     WsawFile aFile;
     aFile.CalcCard34();
 

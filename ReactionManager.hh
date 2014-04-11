@@ -38,7 +38,7 @@ public:
 
   Nucleus * GetProjectile();
   Nucleus * GetEjectile();
-
+  void PrintBEMaps();
 
   //The Static access method for manager
   static  ReactionManager *GetInstance();

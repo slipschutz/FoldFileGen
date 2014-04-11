@@ -311,3 +311,18 @@ void ReactionManager::BuildHE3T(){
   (*Ejectile->GetTheZCoefs())[make_pair("1s1/2","1s1/2")]=0.707;
   
 }
+
+void ReactionManager::PrintBEMaps(){
+  cout<<"INITIAL"<<endl;
+  for (map<string,double>::iterator ii = BindingEnergyMapInitial.begin();
+       ii!=BindingEnergyMapInitial.end();ii++){
+    cout<<ii->first<<"  "<<ii->second<<endl;
+
+  }
+  cout<<"FIANL"<<endl;
+  for (map<string,double>::iterator ii = BindingEnergyMapFinal.begin();
+       ii!=BindingEnergyMapFinal.end();ii++){
+    cout<<ii->first<<"  "<<ii->second<<endl;
+
+  }
+}
